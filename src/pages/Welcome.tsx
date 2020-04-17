@@ -1,62 +1,85 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Card, Typography, Alert } from 'antd';
-import styles from './Welcome.less';
+import { Card, Select, Typography, Row, Col } from 'antd';
+import { Chart, Geom, Axis, Tooltip, Legend } from 'bizcharts';
 
-const CodePreview: React.FC<{}> = ({ children }) => (
-  <pre className={styles.pre}>
-    <code>
-      <Typography.Text copyable>{children}</Typography.Text>
-    </code>
-  </pre>
-);
+const { Option } = Select;
+const { Text } = Typography;
 
-export default (): React.ReactNode => (
-  <PageHeaderWrapper>
-    <Card>
-      <Alert
-        message="umi ui 现已发布，点击右下角 umi 图标即可使用"
-        type="success"
-        showIcon
-        banner
-        style={{
-          margin: -12,
-          marginBottom: 24,
-        }}
-      />
-      <Typography.Text strong>
-        <a target="_blank" rel="noopener noreferrer" href="https://pro.ant.design/docs/block">
-          基于 block 开发，快速构建标准页面
-        </a>
-      </Typography.Text>
-      <CodePreview> npm run ui</CodePreview>
-      <Typography.Text
-        strong
-        style={{
-          marginBottom: 12,
-        }}
-      >
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://pro.ant.design/docs/available-script#npm-run-fetchblocks"
-        >
-          获取全部区块
-        </a>
-      </Typography.Text>
-      <CodePreview> npm run fetch:blocks</CodePreview>
-    </Card>
-    <p
-      style={{
-        textAlign: 'center',
-        marginTop: 24,
-      }}
-    >
-      Want to add more pages? Please refer to{' '}
-      <a href="https://pro.ant.design/docs/block-cn" target="_blank" rel="noopener noreferrer">
-        use block
-      </a>
-      。
-    </p>
-  </PageHeaderWrapper>
-);
+type Item = {
+  name: string;
+  year: number;
+  value: number;
+};
+
+const Welcome: React.FC = () => {
+  const [data, setData] = useState<Item[]>([]);
+
+  useEffect(() => {
+    fetch('/api/lines')
+      .then((res) => res.json())
+      .then((ret) => {
+        setData(ret);
+      });
+  }, []);
+
+  const scale = {
+    year: {
+      tickInterval: 1,
+    },
+    value: {
+      tickInterval: 15,
+    },
+  };
+
+  // const pick = (data: Item[], name: string[]) => {
+  //   const result: Item[] = []
+  //   data.map(item => {
+  //     if (name.find(name => name === item.name)) {
+  //       result.push(item)
+  //     }
+  //   })
+  //   return result
+  // }
+
+  return (
+    <PageHeaderWrapper>
+      <Row>
+        <Col lg={12}>
+          <Card>
+            <Text>专业选择：</Text>
+            <Select defaultActiveFirstOption style={{ width: 200 }} optionFilterProp="children">
+              <Option value="全部">全部</Option>
+              <Option value="信息工程学院">信息工程学院</Option>
+            </Select>
+            <Chart height={400} scale={scale} data={data} forceFit>
+              <Legend />
+              <Tooltip />
+              <Axis name="year" label={{ formatter: (val) => `${val}年` }} />
+              <Axis name="value" label={{ formatter: (val) => `${val}分` }} />
+              <Geom
+                type="line"
+                position="year*value"
+                color="name"
+                size={2}
+                style={[
+                  'name',
+                  {
+                    lineDash: (name: string) => {
+                      if (name === '省控线') {
+                        return [4, 4];
+                      }
+                      return [];
+                    },
+                  },
+                ]}
+              />
+            </Chart>
+          </Card>
+        </Col>
+      </Row>
+    </PageHeaderWrapper>
+  );
+};
+
+export default Welcome;
