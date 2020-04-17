@@ -1,57 +1,56 @@
-# Ant Design Pro
+# NCU 数据可视化
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+## 技术栈
 
-## Environment Prepare
++ [Ant Design Pro](https://pro.ant.design/index-cn)
++ [Antd 4.0](https://ant.design/)
++ [BizCharts - 基于 G2 封装更适合 React](https://bizcharts.net/)
+  + 因为 `BizCharts` 是基于 `G2` 封装的，所以在学习它之前请先阅读 `G2` 相关文档，了解其基本思想。
++ [TypeScript](https://www.typescriptlang.org/)
++ [UmiJs](https://umijs.org/zh-CN)
 
-Install `node_modules`:
+在接手开发前，务必学习过以上*所有的*技术/库。
 
-```bash
-npm install
-```
+## 安装依赖
 
-or
+本项目使用 yarn 进行包管理
 
 ```bash
 yarn
 ```
 
-## Provided Scripts
-
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
+### 启动项目
 
 ```bash
-npm start
+yarn start
 ```
 
-### Build project
+### 项目大包
 
 ```bash
-npm run build
+yarn build
 ```
 
-### Check code style
+### 代码风格检查
+
+本项目**严格执行** `eslint` 规则，并进行 `commit` 自动代码风格检查。
+**务必**注意自己的代码风格规范，否则 `commit` 时，你会看到数不清的报错。
+**代码符合 `eslint` 规范之后，`git commit` 才能成功。**
 
 ```bash
-npm run lint
+yarn lint
 ```
 
-You can also use script to auto fix some lint error:
+你可以使用这个命令来修复一些简单的风格错误
 
 ```bash
-npm run lint:fix
+yarn lint:fix
 ```
 
-### Test code
+### 代码测试
 
 ```bash
-npm test
+yarn test
 ```
 
 ## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
